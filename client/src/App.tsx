@@ -11,7 +11,9 @@ export default function App() {
         setLoading(true);
         setError("");
         try {
-            const response = await fetch("http://localhost:8080/random");
+            const response = await fetch(
+                "https://zip-link-production.up.railway.app/random"
+            );
             if (!response.ok) {
                 throw new Error("Network response was not ok");
             }
@@ -29,8 +31,8 @@ export default function App() {
     }, []);
 
     return (
-        <div className="flex flex-col items-center justify-between min-h-screen bg-stone-950">
-            <header className="text-center text-gray-400 mt-6 py-4 font-medium">
+        <div className="flex flex-col items-center justify-between min-h-screen bg-stone-950 py-6 px-4">
+            <header className="text-center text-gray-400 py-4 font-medium">
                 {" "}
                 First non-tutorial Golang project. Repo{" "}
                 <a
@@ -43,8 +45,12 @@ export default function App() {
                 .
             </header>
             <div className="flex flex-col items-center">
-                <div className="text-center mb-6">
-                    <h1 className="text-xl font-bold mb-2 text-gray-500">
+                <div className="text-center mb-6 flex flex-col items-center">
+                    <img
+                        src="https://i.ibb.co/XJq2N55/Group-1.png"
+                        width={400}
+                    />
+                    <h1 className="text-xl font-bold mb-2 text-gray-500 -mt-28">
                         <i>How I Met Your Mother</i>
                     </h1>
                     <h1 className="text-4xl font-bold mb-2 text-white">
@@ -53,8 +59,8 @@ export default function App() {
                     <h2 className="text-lg text-gray-500 font-medium">
                         Just press the button to get a dose of wisdom from
                         Barney.
-                        <br /> Or Ted. Or Marshall. Who cares, they're all
-                        great!
+                        <br /> Or Ted. Or Marshall. What about Robin or Lily?
+                        Who cares, they're all great!
                     </h2>
                 </div>
                 <div className="flex items-center justify-center bg-white p-6 rounded-lg shadow-lg w-96 h-32 text-center mb-4">
@@ -66,7 +72,7 @@ export default function App() {
                             {error}
                         </p>
                     )}
-                    {quote && <p className="text-lg">{quote}</p>}
+                    {quote && <p className="text-md">{quote}</p>}
                 </div>
                 <button
                     onClick={fetchQuote}
