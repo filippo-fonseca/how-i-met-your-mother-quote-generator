@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"math/rand"
 	"net/http"
@@ -86,32 +87,27 @@ var quotes = []struct {
 }
 
 // RandomQuote returns a random quote from the list
-func RandomQuote() string {
+func RandomQuote() map[string]string {
 	rand.Seed(time.Now().UnixNano())
 	quote := quotes[rand.Intn(len(quotes))]
-	return fmt.Sprintf("'%s' - %s", quote.quote, quote.person)
+	return map[string]string{"quote": fmt.Sprintf("'%s' - %s", quote.quote, quote.person)}
 }
 
 func main() {
 	router := http.NewServeMux()
 
-	router.HandleFunc("GET /", func (w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("Hello, world!"))
-	})
+	// Serve static files from ./client/dist
+	distDir := "./client/dist"
+	router.Handle("/", http.FileServer(http.Dir(distDir)))
 
-	router.HandleFunc("GET /random", func (w http.ResponseWriter, r *http.Request) {
-		// requestData := ShorterRequest{}
-		// err := json.NewDecoder(r.Body).Decode(&requestData)
-
-		// if err != nil {
-		//   panic(err)
-		// }
-
-		w.Write([]byte(RandomQuote()))
+	router.HandleFunc("/random", func(w http.ResponseWriter, r *http.Request) {
+		quote := RandomQuote()
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(quote)
 	})
 
 	server := http.Server{
-		Addr: ":8080",
+		Addr:    ":8080",
 		Handler: router,
 	}
 
