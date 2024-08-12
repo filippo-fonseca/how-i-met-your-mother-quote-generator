@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import "./index.css";
-import { RefreshCcw } from "lucide-react";
+import { RefreshCcw, Clipboard } from "lucide-react"; // Import Clipboard icon
 
 export default function App() {
     const [quote, setQuote] = useState("");
@@ -26,6 +26,19 @@ export default function App() {
         }
     };
 
+    const copyToClipboard = () => {
+        if (quote) {
+            navigator.clipboard
+                .writeText(quote)
+                .then(() => {
+                    alert("Quote copied to clipboard! Say whaaat!?");
+                })
+                .catch(err => {
+                    alert("Failed to copy quote: " + err);
+                });
+        }
+    };
+
     useEffect(() => {
         fetchQuote();
     }, []);
@@ -33,7 +46,6 @@ export default function App() {
     return (
         <div className="flex flex-col items-center justify-between min-h-screen bg-stone-950 py-6 px-4">
             <header className="text-center text-gray-400 py-4 font-medium">
-                {" "}
                 First non-tutorial Golang project. Repo{" "}
                 <a
                     href="https://github.com/filippo-fonseca/how-i-met-your-mother-quote-generator"
@@ -54,7 +66,7 @@ export default function App() {
                         <i>How I Met Your Mother</i>
                     </h1>
                     <h1 className="text-4xl font-bold mb-2 text-white">
-                        Quote Generator
+                        🗽 Quote Generator
                     </h1>
                     <h2 className="text-lg text-gray-500 font-medium">
                         Just press the button to get a dose of wisdom from
@@ -64,9 +76,7 @@ export default function App() {
                     </h2>
                 </div>
                 <div className="flex items-center justify-center bg-white p-6 rounded-lg shadow-lg w-96 h-32 text-center mb-4">
-                    {loading && (
-                        <p className="text-lg text-gray-500">Loading...</p>
-                    )}
+                    {loading && <p className="text-md">Generating...</p>}
                     {error && (
                         <p className="text-md text-red-500 font-medium">
                             {error}
@@ -74,12 +84,20 @@ export default function App() {
                     )}
                     {quote && <p className="text-md">{quote}</p>}
                 </div>
-                <button
-                    onClick={fetchQuote}
-                    className="px-4 py-2 bg-gray-900 text-white rounded-lg hover:opacity-50 transition-colors"
-                >
-                    <RefreshCcw />
-                </button>
+                <div className="flex items-center justify-between w-96">
+                    <button
+                        onClick={copyToClipboard}
+                        className="flex items-center justify-center size-10 bg-gray-900 text-white rounded-lg hover:opacity-50 transition-colors"
+                    >
+                        <Clipboard size={16} />
+                    </button>
+                    <button
+                        onClick={fetchQuote}
+                        className="flex items-center justify-center size-10 bg-gray-900 text-white rounded-lg hover:opacity-50 transition-colors"
+                    >
+                        <RefreshCcw size={16} />
+                    </button>
+                </div>
             </div>
             <footer className="text-center text-gray-400 mt-6 py-4 font-medium">
                 <p>
