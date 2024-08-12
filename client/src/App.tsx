@@ -20,7 +20,7 @@ export default function App() {
             const data = await response.json();
             setQuote(data.quote);
         } catch (error) {
-            setError("Failed to fetch quote. Please try again.");
+            setError("Failed to fetch quote. Please try again." + error);
         } finally {
             setLoading(false);
         }
