@@ -1,9 +1,8 @@
-package main
+package utils
 
 import (
 	"fmt"
 	"math/rand"
-	"net/http"
 	"time"
 )
 
@@ -90,31 +89,4 @@ func RandomQuote() string {
 	rand.Seed(time.Now().UnixNano())
 	quote := quotes[rand.Intn(len(quotes))]
 	return fmt.Sprintf("'%s' - %s", quote.quote, quote.person)
-}
-
-func main() {
-	router := http.NewServeMux()
-
-	router.HandleFunc("GET /", func (w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("Hello, world!"))
-	})
-
-	router.HandleFunc("GET /random", func (w http.ResponseWriter, r *http.Request) {
-		// requestData := ShorterRequest{}
-		// err := json.NewDecoder(r.Body).Decode(&requestData)
-
-		// if err != nil {
-		//   panic(err)
-		// }
-
-		w.Write([]byte(RandomQuote()))
-	})
-
-	server := http.Server{
-		Addr: ":8080",
-		Handler: router,
-	}
-
-	fmt.Println("Listening on PORT :8080")
-	server.ListenAndServe()
 }
